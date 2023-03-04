@@ -1,44 +1,28 @@
-// Note: Do not write @Enumerated annotation above CountryName in this model.
-
 package com.driver.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "countries")
 public class Country {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "country_name", unique = true)
+    @Enumerated(EnumType.STRING)
     private CountryName countryName;
+
     private String code;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
-    List<User> userList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn
-    ServiceProvider serviceProvider;
+    private ServiceProvider serviceProvider;
+
+
+    @OneToOne
+    private User user;
 
     public Country() {
-    }
-
-    public Country(int id, CountryName countryName, String code, List<User> userList, ServiceProvider serviceProvider) {
-        this.id = id;
-        this.countryName = countryName;
-        this.code = code;
-        this.userList = userList;
-        this.serviceProvider = serviceProvider;
-    }
-
-    public Country(CountryName countryName, ServiceProvider serviceProvider) {
-        this.countryName = countryName;
-        this.serviceProvider = serviceProvider;
     }
 
     public int getId() {
@@ -65,19 +49,19 @@ public class Country {
         this.code = code;
     }
 
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
     public ServiceProvider getServiceProvider() {
         return serviceProvider;
     }
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
